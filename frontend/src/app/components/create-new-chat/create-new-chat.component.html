@@ -1,0 +1,59 @@
+<div class="create-chat-container">
+  <div class="create-chat-content">
+    <h2 class="title">Start a New Secure Chat</h2>
+    
+    <!-- Generate Code Section -->
+    <div class="input-section">
+      <label class="section-label">Generate Your Secret Code</label>
+      <div class="input-group">
+        <textarea 
+          class="code-display" 
+          [(ngModel)]="generatedCode"
+          placeholder="Click 'Generate' to create your secret code"
+          readonly
+        ></textarea>
+        <div class="button-row">
+          <button class="generate-btn" (click)="generateCode()">
+            <span class="btn-icon">🔐</span>
+            Generate
+          </button>
+          <button 
+            class="copy-btn" 
+            (click)="copyToClipboard()"
+            [disabled]="!generatedCode"
+            [class.copied]="showCopiedMessage"
+          >
+            <span *ngIf="!showCopiedMessage">📋 Copy</span>
+            <span *ngIf="showCopiedMessage">✓ Copied!</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hash Input Section -->
+    <div class="divider">
+      <span class="divider-text">OR</span>
+    </div>
+
+    <div class="input-section">
+      <label class="section-label">Enter Received Hash</label>
+      <div class="input-group">
+        <textarea 
+          class="hash-input" 
+          [(ngModel)]="hashInput"
+          placeholder="Paste the hash you received to join a chat"
+        ></textarea>
+        <button class="start-btn" (click)="startChat()" [disabled]="!hashInput.trim()">
+          <span class="btn-icon">🚀</span>
+          Start Chat
+        </button>
+      </div>
+    </div>
+
+    <!-- Clear Button -->
+    <button class="clear-btn" (click)="clearAll()">
+      Clear All
+    </button>
+  </div>
+</div>
+

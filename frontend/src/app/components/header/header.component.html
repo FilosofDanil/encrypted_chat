@@ -1,0 +1,20 @@
+<header class="header">
+  <div class="header-container">
+    <button class="new-chat-btn" (click)="onNewChat()">
+      <span class="plus-icon">+</span>
+      <span class="btn-text">New Chat</span>
+    </button>
+    
+    <div class="search-container">
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Search chats..."
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+      />
+      <span class="search-icon">🔍</span>
+    </div>
+  </div>
+</header>
+

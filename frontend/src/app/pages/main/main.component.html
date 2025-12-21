@@ -1,0 +1,19 @@
+<div class="main-layout">
+  <app-header 
+    (newChatClicked)="onNewChat()"
+    (searchChanged)="onSearchChanged($event)"
+  ></app-header>
+
+  <div class="content-wrapper">
+    <app-sidebar 
+      [class.sidebar-hidden]="!sidebarVisible"
+      [chats]="chats"
+      [searchTerm]="searchTerm"
+    ></app-sidebar>
+
+    <main class="main-content">
+      <app-create-new-chat></app-create-new-chat>
+    </main>
+  </div>
+</div>
+
