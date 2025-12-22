@@ -1,0 +1,44 @@
+.chat-list-container {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.empty-state p {
+  color: var(--empty-state-text);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.chats-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollbar styling */
+.chat-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-list-container::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+.chat-list-container::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+}
+
+.chat-list-container::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+

@@ -4,16 +4,19 @@
     (searchChanged)="onSearchChanged($event)"
   ></app-header>
 
-  <div class="content-wrapper">
+  <div class="content-wrapper" [class.chat-open]="hasSelectedChat">
     <app-sidebar 
-      [class.sidebar-hidden]="!sidebarVisible"
-      [chats]="chats"
+      class="sidebar-container"
+      [class.sidebar-hidden]="hasSelectedChat"
       [searchTerm]="searchTerm"
     ></app-sidebar>
 
     <main class="main-content">
-      <app-create-new-chat></app-create-new-chat>
+      <!-- Show Chat View when a chat is selected -->
+      <app-chat-view *ngIf="hasSelectedChat"></app-chat-view>
+      
+      <!-- Show Create New Chat when no chat is selected -->
+      <app-create-new-chat *ngIf="!hasSelectedChat"></app-create-new-chat>
     </main>
   </div>
 </div>
-

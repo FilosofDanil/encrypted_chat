@@ -1,15 +1,3 @@
 <aside class="sidebar">
-  <div class="sidebar-content">
-    <div *ngIf="filteredChats.length === 0" class="empty-state">
-      <p>There are no chats started yet</p>
-    </div>
-
-    <div *ngIf="filteredChats.length > 0" class="chats-list">
-      <div *ngFor="let chat of filteredChats" class="chat-item">
-        <div class="chat-title">{{ chat.title }}</div>
-        <div class="chat-timestamp">{{ chat.timestamp | date:'short' }}</div>
-      </div>
-    </div>
-  </div>
+  <app-chat-list [searchTerm]="searchTerm"></app-chat-list>
 </aside>
-

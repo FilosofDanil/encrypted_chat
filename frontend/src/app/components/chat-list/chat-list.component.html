@@ -1,0 +1,15 @@
+<div class="chat-list-container">
+  <div *ngIf="filteredChats.length === 0" class="empty-state">
+    <p>There are no chats started yet</p>
+  </div>
+
+  <div *ngIf="filteredChats.length > 0" class="chats-list">
+    <app-chat-item 
+      *ngFor="let chat of filteredChats"
+      [chat]="chat"
+      [isSelected]="chatService.isSelected(chat.id)"
+      (click)="onChatSelect(chat.id)"
+    ></app-chat-item>
+  </div>
+</div>
+

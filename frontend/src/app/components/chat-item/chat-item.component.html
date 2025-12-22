@@ -1,0 +1,30 @@
+<div 
+  class="chat-item" 
+  [class.selected]="isSelected"
+  role="button"
+  tabindex="0"
+  [attr.aria-label]="chat.title + ' - ' + lastMessagePreview"
+>
+  <div class="avatar-container">
+    <span class="avatar">{{ chat.avatar || '💬' }}</span>
+    <span *ngIf="chat.isOnline" class="online-indicator"></span>
+  </div>
+  
+  <div class="chat-info">
+    <div class="chat-header">
+      <span class="chat-title">{{ chat.title }}</span>
+      <span class="chat-time">{{ formattedTime }}</span>
+    </div>
+    
+    <div class="chat-preview">
+      <span class="last-message" [class.own-message]="chat.lastMessage?.isOwn">
+        <span *ngIf="chat.lastMessage?.isOwn" class="you-prefix">You: </span>
+        {{ lastMessagePreview }}
+      </span>
+      <span *ngIf="chat.unreadCount > 0" class="unread-badge">
+        {{ chat.unreadCount > 99 ? '99+' : chat.unreadCount }}
+      </span>
+    </div>
+  </div>
+</div>
+

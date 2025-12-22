@@ -5,10 +5,81 @@
   box-sizing: border-box;
 }
 
+/* CSS Variables for Light Theme */
+:root[data-theme="light"] {
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f7f9fc;
+  --bg-sidebar: #f7f9fc;
+  
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-tertiary: #a0aec0;
+  --text-placeholder: #cbd5e0;
+  
+  --border-color: #e1e8ed;
+  --border-light: #e2e8f0;
+  
+  --header-gradient-start: #667eea;
+  --header-gradient-end: #764ba2;
+  
+  --card-bg: #ffffff;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  
+  --input-bg: #f7fafc;
+  --input-focus-bg: #ffffff;
+  --input-border: #e2e8f0;
+  --input-focus-border: #667eea;
+  
+  --scrollbar-track: #f7f9fc;
+  --scrollbar-thumb: #cbd5e0;
+  --scrollbar-thumb-hover: #a0aec0;
+  
+  --empty-state-text: #a0aec0;
+  
+  --overlay-bg: rgba(255, 255, 255, 0.95);
+}
+
+/* CSS Variables for Dark Theme */
+:root[data-theme="dark"] {
+  --bg-primary: #1a202c;
+  --bg-secondary: #2d3748;
+  --bg-tertiary: #1a202c;
+  --bg-sidebar: #2d3748;
+  
+  --text-primary: #e2e8f0;
+  --text-secondary: #cbd5e0;
+  --text-tertiary: #718096;
+  --text-placeholder: #4a5568;
+  
+  --border-color: #4a5568;
+  --border-light: #2d3748;
+  
+  --header-gradient-start: #4c51bf;
+  --header-gradient-end: #553c9a;
+  
+  --card-bg: #2d3748;
+  --card-shadow: rgba(0, 0, 0, 0.3);
+  
+  --input-bg: #1a202c;
+  --input-focus-bg: #2d3748;
+  --input-border: #4a5568;
+  --input-focus-border: #667eea;
+  
+  --scrollbar-track: #2d3748;
+  --scrollbar-thumb: #4a5568;
+  --scrollbar-thumb-hover: #718096;
+  
+  --empty-state-text: #718096;
+  
+  --overlay-bg: rgba(45, 55, 72, 0.95);
+}
+
 html, body {
   height: 100%;
   width: 100%;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
@@ -17,8 +88,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #f5f7fa;
-  color: #2d3748;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 /* Ensure proper scrolling on mobile */

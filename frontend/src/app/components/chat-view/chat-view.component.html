@@ -1,0 +1,64 @@
+<div class="chat-view" *ngIf="selectedChat">
+  <!-- Chat Header -->
+  <div class="chat-header">
+    <button class="back-button" (click)="goBack()">
+      <span>←</span>
+    </button>
+    <div class="header-avatar">
+      <span class="avatar">{{ selectedChat.avatar || '💬' }}</span>
+      <span *ngIf="selectedChat.isOnline" class="online-indicator"></span>
+    </div>
+    <div class="header-info">
+      <span class="header-title">{{ selectedChat.title }}</span>
+      <span class="header-status" [class.online]="selectedChat.isOnline">
+        {{ selectedChat.isOnline ? 'Online' : 'Offline' }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Messages Container -->
+  <div class="messages-container" #messagesContainer>
+    <div class="messages-wrapper">
+      <ng-container *ngFor="let message of messages; let i = index">
+        <!-- Date Separator -->
+        <div *ngIf="formatMessageDate(message, i)" class="date-separator">
+          <span>{{ formatMessageDate(message, i) }}</span>
+        </div>
+        
+        <!-- Message Bubble -->
+        <div 
+          class="message-bubble" 
+          [class.own]="message.isOwn"
+          [class.other]="!message.isOwn"
+        >
+          <div class="message-content">
+            {{ message.content }}
+          </div>
+          <div class="message-time">
+            {{ formatMessageTime(message) }}
+            <span *ngIf="message.isOwn" class="check-mark">✓✓</span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Message Input -->
+  <div class="message-input-container">
+    <textarea
+      class="message-input"
+      [(ngModel)]="newMessage"
+      (keypress)="onKeyPress($event)"
+      placeholder="Type a message..."
+      rows="1"
+    ></textarea>
+    <button 
+      class="send-button" 
+      (click)="sendMessage()"
+      [disabled]="!newMessage.trim()"
+    >
+      <span class="send-icon">➤</span>
+    </button>
+  </div>
+</div>
+
