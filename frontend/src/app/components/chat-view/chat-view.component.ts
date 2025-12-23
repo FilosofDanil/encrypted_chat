@@ -46,13 +46,10 @@ export class ChatViewComponent implements AfterViewChecked {
 
   private scrollToBottom(): void {
     try {
-      // Scroll the entire chat view to bottom
-      setTimeout(() => {
-        const chatView = document.querySelector('.chat-view');
-        if (chatView) {
-          chatView.scrollTop = chatView.scrollHeight;
-        }
-      }, 100);
+      if (this.messagesContainer) {
+        const element = this.messagesContainer.nativeElement;
+        element.scrollTop = element.scrollHeight;
+      }
     } catch (err) {
       console.error('Scroll error:', err);
     }
@@ -73,6 +70,9 @@ export class ChatViewComponent implements AfterViewChecked {
     this.newMessage = '';
     this.selectedFile = null;
     this.shouldScroll = true;
+    
+    // Scroll to bottom after message is sent
+    setTimeout(() => this.scrollToBottom(), 50);
   }
 
   onFileSelect(event: Event): void {
