@@ -2,10 +2,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 80px);
+  height: 100%;
   padding: 2rem;
   background: var(--bg-primary);
   transition: background 0.3s ease;
+  overflow-y: auto;
 }
 
 .create-chat-content {

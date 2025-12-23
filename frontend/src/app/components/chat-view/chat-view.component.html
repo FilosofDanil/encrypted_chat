@@ -45,20 +45,60 @@
 
   <!-- Message Input -->
   <div class="message-input-container">
-    <textarea
-      class="message-input"
-      [(ngModel)]="newMessage"
-      (keypress)="onKeyPress($event)"
-      placeholder="Type a message..."
-      rows="1"
-    ></textarea>
-    <button 
-      class="send-button" 
-      (click)="sendMessage()"
-      [disabled]="!newMessage.trim()"
-    >
-      <span class="send-icon">➤</span>
-    </button>
+    <!-- File Preview -->
+    <div class="file-preview" *ngIf="selectedFile">
+      <div class="file-info">
+        <span class="file-icon">📎</span>
+        <span class="file-name">{{ selectedFile.name }}</span>
+        <span class="file-size">({{ formatFileSize(selectedFile.size) }})</span>
+      </div>
+      <button class="remove-file-btn" (click)="removeFile()" type="button">
+        ✕
+      </button>
+    </div>
+
+    <!-- Input Row -->
+    <div class="input-row">
+      <!-- Hidden File Input -->
+      <input 
+        type="file" 
+        #fileInput 
+        (change)="onFileSelect($event)" 
+        class="file-input-hidden"
+        accept="*/*"
+      />
+      
+      <!-- Attach File Button -->
+      <button 
+        class="attach-button" 
+        (click)="triggerFileInput()"
+        type="button"
+        title="Attach file"
+      >
+        <span class="attach-icon">📎</span>
+      </button>
+
+      <!-- Message Input -->
+      <textarea
+        class="message-input"
+        [(ngModel)]="newMessage"
+        (keypress)="onKeyPress($event)"
+        (input)="onInput()"
+        placeholder="Type a message..."
+        rows="1"
+        #messageTextarea
+      ></textarea>
+
+      <!-- Send Button -->
+      <button 
+        class="send-button" 
+        (click)="sendMessage()"
+        [disabled]="!newMessage.trim() && !selectedFile"
+        type="button"
+      >
+        <span class="send-icon">➤</span>
+      </button>
+    </div>
   </div>
 </div>
 

@@ -31,9 +31,9 @@
   --input-border: #e2e8f0;
   --input-focus-border: #667eea;
   
-  --scrollbar-track: #f7f9fc;
-  --scrollbar-thumb: #cbd5e0;
-  --scrollbar-thumb-hover: #a0aec0;
+  --scrollbar-track: rgba(0, 0, 0, 0.08);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.25);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.4);
   
   --empty-state-text: #a0aec0;
   
@@ -66,9 +66,9 @@
   --input-border: #4a5568;
   --input-focus-border: #667eea;
   
-  --scrollbar-track: #2d3748;
-  --scrollbar-thumb: #4a5568;
-  --scrollbar-thumb-hover: #718096;
+  --scrollbar-track: rgba(0, 0, 0, 0.2);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.2);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.35);
   
   --empty-state-text: #718096;
   

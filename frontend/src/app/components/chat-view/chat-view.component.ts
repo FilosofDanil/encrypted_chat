@@ -13,9 +13,12 @@ import { Message } from '../../models/chat.model';
 })
 export class ChatViewComponent implements AfterViewChecked {
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
+  @ViewChild('fileInput') private fileInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('messageTextarea') private messageTextarea!: ElementRef<HTMLTextAreaElement>;
   
   chatService = inject(ChatService);
   newMessage: string = '';
+  selectedFile: File | null = null;
   private shouldScroll = true;
 
   get selectedChat() {
@@ -30,25 +33,72 @@ export class ChatViewComponent implements AfterViewChecked {
     if (this.shouldScroll) {
       this.scrollToBottom();
     }
+    this.adjustTextareaHeight();
+  }
+
+  adjustTextareaHeight(): void {
+    if (this.messageTextarea) {
+      const textarea = this.messageTextarea.nativeElement;
+      textarea.style.height = 'auto';
+      textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+    }
   }
 
   private scrollToBottom(): void {
     try {
-      if (this.messagesContainer) {
-        const element = this.messagesContainer.nativeElement;
-        element.scrollTop = element.scrollHeight;
-      }
+      // Scroll the entire chat view to bottom
+      setTimeout(() => {
+        const chatView = document.querySelector('.chat-view');
+        if (chatView) {
+          chatView.scrollTop = chatView.scrollHeight;
+        }
+      }, 100);
     } catch (err) {
       console.error('Scroll error:', err);
     }
   }
 
   sendMessage(): void {
-    if (!this.newMessage.trim()) return;
+    if (!this.newMessage.trim() && !this.selectedFile) return;
     
-    this.chatService.sendMessage(this.newMessage);
+    let messageContent = this.newMessage.trim();
+    
+    // If there's a file, add file info to message
+    if (this.selectedFile) {
+      const fileInfo = `📎 ${this.selectedFile.name} (${this.formatFileSize(this.selectedFile.size)})`;
+      messageContent = messageContent ? `${messageContent}\n${fileInfo}` : fileInfo;
+    }
+    
+    this.chatService.sendMessage(messageContent);
     this.newMessage = '';
+    this.selectedFile = null;
     this.shouldScroll = true;
+  }
+
+  onFileSelect(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
+  }
+
+  triggerFileInput(): void {
+    this.fileInput.nativeElement.click();
+  }
+
+  removeFile(): void {
+    this.selectedFile = null;
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
+  }
+
+  formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
   }
 
   onKeyPress(event: KeyboardEvent): void {
@@ -56,6 +106,10 @@ export class ChatViewComponent implements AfterViewChecked {
       event.preventDefault();
       this.sendMessage();
     }
+  }
+
+  onInput(): void {
+    this.adjustTextareaHeight();
   }
 
   formatMessageTime(message: Message): string {

@@ -1,6 +1,8 @@
 .chat-list-container {
   height: 100%;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 .empty-state {
