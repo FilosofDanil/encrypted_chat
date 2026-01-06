@@ -201,6 +201,33 @@ export class ChatService {
     this.chatsSignal.set(updatedChats);
   }
 
+  deleteMessage(messageId: string): void {
+    const chatId = this.selectedChatIdSignal();
+    if (!chatId) return;
+
+    const currentMessages = this.messagesSignal();
+    const chatMessages = currentMessages[chatId] || [];
+    const updatedMessages = chatMessages.filter(msg => msg.id !== messageId);
+
+    this.messagesSignal.set({
+      ...currentMessages,
+      [chatId]: updatedMessages
+    });
+
+    // Update last message in chat if we deleted the last message
+    const chats = this.chatsSignal();
+    const chat = chats.find(c => c.id === chatId);
+    if (chat?.lastMessage?.id === messageId) {
+      const newLastMessage = updatedMessages.length > 0 
+        ? updatedMessages[updatedMessages.length - 1] 
+        : undefined;
+      const updatedChats = chats.map(c =>
+        c.id === chatId ? { ...c, lastMessage: newLastMessage } : c
+      );
+      this.chatsSignal.set(updatedChats);
+    }
+  }
+
   getFilteredChats(searchTerm: string): Chat[] {
     if (!searchTerm.trim()) {
       return this.chats();
@@ -218,4 +245,6 @@ export class ChatService {
     return this.selectedChatIdSignal() === chatId;
   }
 }
+
+
 

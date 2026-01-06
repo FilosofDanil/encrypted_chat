@@ -31,6 +31,13 @@
           [class.own]="message.isOwn"
           [class.other]="!message.isOwn"
         >
+          <button 
+            class="delete-button" 
+            (click)="deleteMessage(message.id, $event)"
+            title="Delete message"
+          >
+            🗑
+          </button>
           <div class="message-content">
             {{ message.content }}
           </div>

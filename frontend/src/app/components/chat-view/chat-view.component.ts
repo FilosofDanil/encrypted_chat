@@ -155,5 +155,10 @@ export class ChatViewComponent implements AfterViewChecked {
   goBack(): void {
     this.chatService.selectChat(null);
   }
+
+  deleteMessage(messageId: string, event: Event): void {
+    event.stopPropagation();
+    this.chatService.deleteMessage(messageId);
+  }
 }
 
