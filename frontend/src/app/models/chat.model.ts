@@ -1,3 +1,9 @@
+export interface ReplyInfo {
+  messageId: string;
+  content: string;
+  senderName: string;
+}
+
 export interface Message {
   id: string;
   chatId: string;
@@ -6,6 +12,7 @@ export interface Message {
   senderName: string;
   timestamp: Date;
   isOwn: boolean;
+  replyTo?: ReplyInfo;
 }
 
 export interface Chat {

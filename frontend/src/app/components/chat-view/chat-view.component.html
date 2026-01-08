@@ -30,14 +30,39 @@
           class="message-bubble" 
           [class.own]="message.isOwn"
           [class.other]="!message.isOwn"
+          [attr.data-message-id]="message.id"
         >
-          <button 
-            class="delete-button" 
-            (click)="deleteMessage(message.id, $event)"
-            title="Delete message"
+          <!-- Action Buttons -->
+          <div class="message-actions" [class.left]="message.isOwn" [class.right]="!message.isOwn">
+            <button 
+              class="action-button reply-button" 
+              (click)="replyToMessage(message, $event)"
+              title="Reply"
+            >
+              ↩
+            </button>
+            <button 
+              class="action-button delete-button" 
+              (click)="deleteMessage(message.id, $event)"
+              title="Delete message"
+            >
+              🗑
+            </button>
+          </div>
+          
+          <!-- Reply Preview (if replying to another message) -->
+          <div 
+            *ngIf="message.replyTo" 
+            class="reply-preview"
+            (click)="scrollToMessage(message.replyTo.messageId)"
           >
-            🗑
-          </button>
+            <div class="reply-bar"></div>
+            <div class="reply-content">
+              <span class="reply-sender">{{ message.replyTo.senderName }}</span>
+              <span class="reply-text">{{ truncateReplyContent(message.replyTo.content) }}</span>
+            </div>
+          </div>
+          
           <div class="message-content">
             {{ message.content }}
           </div>
@@ -52,6 +77,20 @@
 
   <!-- Message Input -->
   <div class="message-input-container">
+    <!-- Reply Preview -->
+    <div class="input-reply-preview" *ngIf="replyingTo">
+      <div class="input-reply-info">
+        <div class="input-reply-bar"></div>
+        <div class="input-reply-content">
+          <span class="input-reply-label">Replying to <strong>{{ replyingTo.senderName }}</strong></span>
+          <span class="input-reply-text">{{ truncateReplyContent(replyingTo.content, 80) }}</span>
+        </div>
+      </div>
+      <button class="cancel-reply-btn" (click)="cancelReply()" type="button">
+        ✕
+      </button>
+    </div>
+
     <!-- File Preview -->
     <div class="file-preview" *ngIf="selectedFile">
       <div class="file-info">

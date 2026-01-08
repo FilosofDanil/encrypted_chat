@@ -1,5 +1,5 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { Chat, Message } from '../models/chat.model';
+import { Chat, Message, ReplyInfo } from '../models/chat.model';
 
 @Injectable({
   providedIn: 'root'
@@ -171,7 +171,7 @@ export class ChatService {
     }
   }
 
-  sendMessage(content: string): void {
+  sendMessage(content: string, replyTo?: ReplyInfo): void {
     const chatId = this.selectedChatIdSignal();
     if (!chatId || !content.trim()) return;
 
@@ -182,7 +182,8 @@ export class ChatService {
       senderId: 'user-1',
       senderName: 'You',
       timestamp: new Date(),
-      isOwn: true
+      isOwn: true,
+      replyTo
     };
 
     // Add message to messages
@@ -199,6 +200,13 @@ export class ChatService {
       chat.id === chatId ? { ...chat, lastMessage: newMessage } : chat
     );
     this.chatsSignal.set(updatedChats);
+  }
+
+  getMessageById(messageId: string): Message | undefined {
+    const chatId = this.selectedChatIdSignal();
+    if (!chatId) return undefined;
+    const chatMessages = this.messagesSignal()[chatId] || [];
+    return chatMessages.find(msg => msg.id === messageId);
   }
 
   deleteMessage(messageId: string): void {

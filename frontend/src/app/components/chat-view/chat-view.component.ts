@@ -2,7 +2,7 @@ import { Component, inject, ElementRef, ViewChild, AfterViewChecked } from '@ang
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../../services/chat.service';
-import { Message } from '../../models/chat.model';
+import { Message, ReplyInfo } from '../../models/chat.model';
 
 @Component({
   selector: 'app-chat-view',
@@ -19,6 +19,7 @@ export class ChatViewComponent implements AfterViewChecked {
   chatService = inject(ChatService);
   newMessage: string = '';
   selectedFile: File | null = null;
+  replyingTo: Message | null = null;
   private shouldScroll = true;
 
   get selectedChat() {
@@ -66,13 +67,51 @@ export class ChatViewComponent implements AfterViewChecked {
       messageContent = messageContent ? `${messageContent}\n${fileInfo}` : fileInfo;
     }
     
-    this.chatService.sendMessage(messageContent);
+    // Build reply info if replying to a message
+    const replyInfo: ReplyInfo | undefined = this.replyingTo ? {
+      messageId: this.replyingTo.id,
+      content: this.replyingTo.content,
+      senderName: this.replyingTo.senderName
+    } : undefined;
+    
+    this.chatService.sendMessage(messageContent, replyInfo);
     this.newMessage = '';
     this.selectedFile = null;
+    this.replyingTo = null;
     this.shouldScroll = true;
     
     // Scroll to bottom after message is sent
     setTimeout(() => this.scrollToBottom(), 50);
+  }
+
+  replyToMessage(message: Message, event: Event): void {
+    event.stopPropagation();
+    this.replyingTo = message;
+    // Focus the textarea
+    setTimeout(() => {
+      if (this.messageTextarea) {
+        this.messageTextarea.nativeElement.focus();
+      }
+    }, 50);
+  }
+
+  cancelReply(): void {
+    this.replyingTo = null;
+  }
+
+  scrollToMessage(messageId: string): void {
+    const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+    if (messageElement) {
+      messageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Add highlight animation
+      messageElement.classList.add('highlight');
+      setTimeout(() => messageElement.classList.remove('highlight'), 1500);
+    }
+  }
+
+  truncateReplyContent(content: string, maxLength: number = 50): string {
+    if (content.length <= maxLength) return content;
+    return content.substring(0, maxLength) + '...';
   }
 
   onFileSelect(event: Event): void {
